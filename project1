@@ -1,0 +1,107 @@
+int xValue = 0 ;
+int yValue = 0 ;
+int bValue = 0 ;
+
+void setup()
+{
+  Serial.begin(9600) ;
+
+  for (int i = 5; i <= 12; i++) {
+    pinMode(i, INPUT);
+  }
+}
+
+void loop()
+{
+  xValue = analogRead(A0);
+  yValue = analogRead(A1);
+  bValue = digitalRead(3);
+  Serial.print(xValue, DEC);
+  Serial.print(",");
+  Serial.print(yValue, DEC);
+  Serial.print(",");
+  Serial.print(!bValue);
+  Serial.print("\n");
+  delay(10);
+
+
+  // A 9
+  // B 10
+  // C 7
+  // D 5
+  // E 6
+  // F 11
+  // G 12
+  // . 8
+
+  for (int i = 5; i <= 12; i++) {
+    digitalWrite(i, LOW);
+  }
+
+  int cw = 1;
+
+  // sprawdz czy góra
+  if (yValue >= 512) {
+    // sprawdz czy prawo czy lewo
+    if (xValue >= 512) {
+      // prawo
+      cw = 1;
+    }
+    else {
+      // lewo
+      cw = 2;
+    }
+  } else {
+    // doł
+    if (xValue >= 512) {
+      // prawo
+      cw = 4;
+    }
+    else {
+      // lewo
+      cw = 3;
+    }
+  }
+
+
+  // 1 ćwiartka
+  if (cw == 1) {
+    digitalWrite(10, HIGH);
+    digitalWrite(7, HIGH);
+  }
+
+
+
+  // 2 ćwiartka
+  if (cw == 2) {
+    digitalWrite(9, HIGH);
+    digitalWrite(10, HIGH);
+    digitalWrite(12, HIGH);
+    digitalWrite(6, HIGH);
+    digitalWrite(5, HIGH);
+  }
+
+  // 3 ćwiartka
+  if (cw == 3) {
+    digitalWrite(9, HIGH);
+    digitalWrite(10, HIGH);
+    digitalWrite(12, HIGH);
+    digitalWrite(7, HIGH);
+    digitalWrite(5, HIGH);
+
+  }
+
+  // 4 ćwiartka
+  if (cw == 4) {
+    digitalWrite(11, HIGH);
+    digitalWrite(12, HIGH);
+    digitalWrite(10, HIGH);
+    digitalWrite(7, HIGH);
+
+  }
+
+
+
+  // delay(1);
+
+}
